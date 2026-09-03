@@ -85,3 +85,11 @@ def edit_profile():
         return redirect(url_for("main.profile", username=current_user.username))
 
     return render_template("auth/edit_profile.html")
+
+
+@auth_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("SESSION_TERMINATED: Logged out successfully.", "success")
+    return redirect(url_for("main.index"))
