@@ -16,6 +16,7 @@
             <div class="insta-username-row">
                 <h1 class="insta-handle">@{{ user.username }}</h1>
                 {% if current_user.is_authenticated and current_user.id == user.id %}
+                    <a href="{{ url_for('auth.edit_profile') }}" class="insta-btn">Edit Profile</a>
                     <a href="{{ url_for('main.new_post') }}" class="insta-btn insta-btn-primary">+ New Research Log</a>
                 {% endif %}
             </div>
@@ -35,6 +36,13 @@
             <div class="insta-bio-section">
                 <p class="insta-name-display">{{ user.username }} // Research Operator</p>
                 <p class="insta-bio-text">{{ user.bio or 'Building digital memory & self-learning logs.' }}</p>
+                {% if user.interests %}
+                    <p class="insta-interests-text">&gt; interests: 
+                        {% for tag in user.interests.split(',') %}
+                            <span class="interest-tag">#{{ tag.strip() }}</span>
+                        {% endfor %}
+                    </p>
+                {% endif %}
                 <p class="insta-email-display">&gt; contact: {{ user.email }}</p>
             </div>
         </div>

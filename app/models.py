@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     bio = db.Column(db.String(250), nullable=True, default="Building my digital brain and research logs.")
+    interests = db.Column(db.String(250), nullable=True, default="python, cybersecurity, linux")
     avatar_url = db.Column(db.String(300), nullable=True)
     posts = db.relationship("Post", backref="author", lazy=True, cascade="all, delete-orphan")
 

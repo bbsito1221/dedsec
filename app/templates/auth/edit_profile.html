@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}DEDSEC // EDIT PROFILE{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div class="terminal-box wide-box">
+        <div class="terminal-header">
+            <span class="prompt-symbol">&gt;</span> dedsec@sec-ops:~$ profile --edit
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">[!] {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="cyber-form">
+            <div class="input-group">
+                <label for="username">HANDLE (USERNAME):</label>
+                <input type="text" id="username" name="username" value="{{ current_user.username }}" required autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="bio">BIO / DESCRIPTION:</label>
+                <textarea id="bio" name="bio" rows="3" placeholder="Tell the network about yourself...">{{ current_user.bio or '' }}</textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="interests">INTERESTS / TAGS (comma separated):</label>
+                <input type="text" id="interests" name="interests" value="{{ current_user.interests or '' }}" placeholder="python, cybersecurity, reverse_engineering, linux">
+            </div>
+
+            <div class="input-group">
+                <label for="avatar_url">AVATAR IMAGE URL (Optional):</label>
+                <input type="url" id="avatar_url" name="avatar_url" value="{{ current_user.avatar_url or '' }}" placeholder="https://example.com/avatar.png">
+            </div>
+            
+            <button type="submit" class="terminal-btn">[ SAVE_CHANGES ]</button>
+        </form>
+
+        <div class="terminal-footer">
+            <a href="{{ url_for('main.profile', username=current_user.username) }}">&gt; cancel & return to profile</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

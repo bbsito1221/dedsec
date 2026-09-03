@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from app.models import User
 from app.blueprints.auth import auth_bp
@@ -55,9 +55,33 @@ def register():
     return render_template("auth/register.html")
 
 
-@auth_bp.route("/logout")
+@auth_bp.route("/edit-profile", methods=["GET", "POST"])
 @login_required
-def logout():
-    logout_user()
-    flash("SESSION_TERMINATED: Logged out successfully.", "success")
-    return redirect(url_for("main.index"))
+def edit_profile():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        bio = request.form.get("bio", "").strip()
+        interests = request.form.get("interests", "").strip()
+        avatar_url = request.form.get("avatar_url", "").strip()
+
+        if not username:
+            flash("ACCESS_DENIED: Username cannot be empty.", "error")
+            return redirect(url_for("auth.edit_profile"))
+
+        # Check if username is taken by another user
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user and existing_user.id != current_user.id:
+            flash("ACCESS_DENIED: Username already taken.", "error")
+            return redirect(url_for("auth.edit_profile"))
+
+        current_user.username = username
+        current_user.bio = bio
+        current_user.interests = interests
+        if avatar_url:
+            current_user.avatar_url = avatar_url
+
+        db.session.commit()
+        flash("ACCESS_GRANTED: Profile updated successfully.", "success")
+        return redirect(url_for("main.profile", username=current_user.username))
+
+    return render_template("auth/edit_profile.html")
