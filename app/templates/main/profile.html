@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}DEDSEC // @{{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="insta-profile-container">
+    <!-- Profile Header (Instagram style) -->
+    <header class="insta-header">
+        <div class="insta-avatar-wrapper">
+            <div class="insta-gradient-ring">
+                <img src="{{ user.avatar_url or url_for('static', filename='img/mrrobot.gif') }}" alt="{{ user.username }}" class="insta-avatar">
+            </div>
+        </div>
+
+        <div class="insta-profile-info">
+            <div class="insta-username-row">
+                <h1 class="insta-handle">@{{ user.username }}</h1>
+                {% if current_user.is_authenticated and current_user.id == user.id %}
+                    <a href="{{ url_for('main.new_post') }}" class="insta-btn insta-btn-primary">+ New Research Log</a>
+                {% endif %}
+            </div>
+
+            <div class="insta-stats-row">
+                <div class="insta-stat">
+                    <span class="insta-stat-num">{{ posts | length }}</span> posts
+                </div>
+                <div class="insta-stat">
+                    <span class="insta-stat-num">1,337</span> secure nodes
+                </div>
+                <div class="insta-stat">
+                    <span class="insta-stat-num">42</span> decrypts
+                </div>
+            </div>
+
+            <div class="insta-bio-section">
+                <p class="insta-name-display">{{ user.username }} // Research Operator</p>
+                <p class="insta-bio-text">{{ user.bio or 'Building digital memory & self-learning logs.' }}</p>
+                <p class="insta-email-display">&gt; contact: {{ user.email }}</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Highlights / Quick Categories Row -->
+    <section class="insta-highlights">
+        <div class="highlight-item">
+            <div class="highlight-ring">
+                <div class="highlight-thumb" style="background: #111; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-weight: bold;">⚡</div>
+            </div>
+            <span class="highlight-label">Root</span>
+        </div>
+        <div class="highlight-item">
+            <div class="highlight-ring">
+                <div class="highlight-thumb" style="background: #111; display: flex; align-items: center; justify-content: center; color: var(--accent-green); font-weight: bold;">01</div>
+            </div>
+            <span class="highlight-label">Python</span>
+        </div>
+        <div class="highlight-item">
+            <div class="highlight-ring">
+                <div class="highlight-thumb" style="background: #111; display: flex; align-items: center; justify-content: center; color: var(--accent-red); font-weight: bold;">🔒</div>
+            </div>
+            <span class="highlight-label">Sec</span>
+        </div>
+        <div class="highlight-item">
+            <div class="highlight-ring">
+                <div class="highlight-thumb" style="background: #111; display: flex; align-items: center; justify-content: center; color: #ffb700; font-weight: bold;">🧠</div>
+            </div>
+            <span class="highlight-label">Notes</span>
+        </div>
+    </section>
+
+    <!-- Tabs Navigation -->
+    <div class="insta-tabs">
+        <a href="#" class="insta-tab active">
+            <svg aria-label="Posts" class="_ab6-" fill="currentColor" height="18" role="img" viewBox="0 0 24 24" width="18"><rect fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="18" x="3" y="3"></rect><line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="3" x2="21" y1="9" y2="9"></line><line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="3" x2="21" y1="15" y2="15"></line><line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="9" x2="9" y1="3" y2="21"></line><line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="15" x2="15" y1="3" y2="21"></line></svg>
+            POSTS
+        </a>
+    </div>
+
+    <!-- Grid Layout (Instagram 3-column Grid) -->
+    <section class="insta-grid">
+        {% if posts %}
+            {% for post in posts %}
+                <a href="{{ url_for('main.post_detail', post_id=post.id) }}" class="insta-grid-item" style="border-bottom: 3px solid {{ post.accent_color or '#00f0ff' }};">
+                    {% if post.image_url %}
+                        <img src="{{ post.image_url }}" alt="{{ post.title }}" loading="lazy" onerror="this.style.display='none'">
+                    {% else %}
+                        <div class="insta-grid-placeholder">
+                            <span class="grid-category-tag" style="color: {{ post.accent_color or '#00f0ff' }};">[{{ post.category | upper }}]</span>
+                            <h3 class="grid-post-title">{{ post.title }}</h3>
+                        </div>
+                    {% endif %}
+                    <div class="insta-grid-overlay">
+                        <span class="overlay-title">{{ post.title }}</span>
+                        <span class="overlay-date">{{ post.timestamp.strftime('%m/%d') }}</span>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="insta-no-posts">
+                <p>&gt; [0] posts found in this operator profile.</p>
+            </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

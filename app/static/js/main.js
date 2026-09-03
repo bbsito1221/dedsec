@@ -1,0 +1,1 @@
+console.log("PracticaFlask loaded");

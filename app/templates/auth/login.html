@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}DEDSEC // LOGIN{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div class="terminal-box">
+        <div class="avatar-container">
+            <img src="{{ url_for('static', filename='img/mrrobot.gif') }}" alt="DedSec Profile" class="cyber-gif">
+            <div class="status-indicator"></div>
+        </div>
+        <div class="terminal-header">
+            <span class="prompt-symbol">&gt;</span> dedsec@sec-ops:~$ authenticate --user
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">[!] {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="cyber-form">
+            <div class="input-group">
+                <label for="email">SECURE_ID (EMAIL):</label>
+                <input type="email" id="email" name="email" required autocomplete="off" autofocus placeholder="user@domain.com">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">PASSPHRASE:</label>
+                <input type="password" id="password" name="password" required autocomplete="off" placeholder="••••••••••••">
+            </div>
+            
+            <button type="submit" class="terminal-btn">[ INITIATE_SESSION ]</button>
+        </form>
+
+        <div class="terminal-footer">
+            <a href="{{ url_for('auth.register') }}">&gt; no access profile? register node</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

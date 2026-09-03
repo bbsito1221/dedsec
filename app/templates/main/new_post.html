@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}DEDSEC // NEW ENTRY{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div class="terminal-box wide-box">
+        <div class="terminal-header">
+            <span class="prompt-symbol">&gt;</span> dedsec@sec-ops:~$ nano research_entry.log
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">[!] {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="cyber-form">
+            <div class="input-group">
+                <label for="title">TITLE / TOPIC *:</label>
+                <input type="text" id="title" name="title" required autocomplete="off" placeholder="e.g. Advanced Memory Analysis in Linux">
+            </div>
+
+            <div class="input-group">
+                <label for="category">CATEGORY (e.g. CYBERSEC, PYTHON, HARDWARE) *:</label>
+                <input type="text" id="category" name="category" required autocomplete="off" placeholder="CYBERSEC">
+            </div>
+
+            <div class="input-group">
+                <label for="summary">BRIEF SUMMARY / ABSTRACT (Optional):</label>
+                <input type="text" id="summary" name="summary" autocomplete="off" placeholder="Short description of what was investigated...">
+            </div>
+
+            <div class="input-group">
+                <label for="source_url">EXTERNAL REFERENCE URL (Optional):</label>
+                <input type="url" id="source_url" name="source_url" autocomplete="off" placeholder="https://github.com/... or https://docs...">
+            </div>
+
+            <div class="input-group">
+                <label for="image_url">IMAGE / DIAGRAM URL (Optional):</label>
+                <input type="url" id="image_url" name="image_url" autocomplete="off" placeholder="https://example.com/diagram.png">
+            </div>
+
+            <div class="input-group">
+                <label for="accent_color">ACCENT THEME COLOR (Optional):</label>
+                <select id="accent_color" name="accent_color" class="cyber-select">
+                    <option value="#00f0ff">Cyan (Watch Dogs)</option>
+                    <option value="#ff2a2a">Red (Mr. Robot / DedSec)</option>
+                    <option value="#00ff66">Matrix Green</option>
+                    <option value="#ffb700">Amber / Gold</option>
+                    <option value="#bf00ff">Neon Purple</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="content">EXTENSIVE NOTES & INFORMATION *:</label>
+                <textarea id="content" name="content" rows="10" required placeholder="Paste code snippets, research findings, commands, markdown notes, etc..."></textarea>
+            </div>
+            
+            <button type="submit" class="terminal-btn">[ COMMIT_LOG ]</button>
+        </form>
+
+        <div class="terminal-footer">
+            <a href="{{ url_for('main.index') }}">&gt; cancel & return to feed</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

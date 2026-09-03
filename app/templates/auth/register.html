@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}DEDSEC // REGISTER{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div class="terminal-box">
+        <div class="avatar-container">
+            <img src="{{ url_for('static', filename='img/mrrobot.gif') }}" alt="DedSec Profile" class="cyber-gif">
+            <div class="status-indicator"></div>
+        </div>
+        <div class="terminal-header">
+            <span class="prompt-symbol">&gt;</span> dedsec@sec-ops:~$ profile --create
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">[!] {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="cyber-form">
+            <div class="input-group">
+                <label for="username">HANDLE (USERNAME):</label>
+                <input type="text" id="username" name="username" required autocomplete="off" autofocus placeholder="elliot">
+            </div>
+
+            <div class="input-group">
+                <label for="email">SECURE_ID (EMAIL):</label>
+                <input type="email" id="email" name="email" required autocomplete="off" placeholder="user@domain.com">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">PASSPHRASE:</label>
+                <input type="password" id="password" name="password" required autocomplete="off" placeholder="••••••••••••">
+            </div>
+            
+            <button type="submit" class="terminal-btn">[ DEPLOY_NODE ]</button>
+        </form>
+
+        <div class="terminal-footer">
+            <a href="{{ url_for('auth.login') }}">&gt; already connected? login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
